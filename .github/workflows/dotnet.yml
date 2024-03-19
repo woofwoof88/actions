@@ -10,22 +10,59 @@ on:
     branches: [ "main" ]
 
 jobs:
-  changed_files:
+  changed_files:    
     runs-on: ubuntu-latest
     name: Testing Changes
     steps:
       - uses: actions/checkout@v4
+
       - name: Get Changed files
         id: changed-files
         uses: tj-actions/changed-files@v43
 
-      - name: List All Changed files
+      - name: Grid Only
+        uses: tj-actions/changed-files@v43
+        id: grid-only
+        with:
+          files_yaml: |
+            src:
+              - www/**
+              - lib/**
+
+      - name: Grid Only
+        uses: tj-actions/changed-files@v43
+        id: mhws-only
+        with:
+          files_yaml: |
+            src:
+              - mhws/**
+              - lib/**
+      
+      - name: Run Step if grid changes
+        if: steps.grid-only.outputs.test_any_changed == 'true'
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          GRID_CHANGED_FILES: ${{ steps.grid-only.outputs.all_changed_files }}
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
+          echo "********************************"
+          echo "Grid files changes"
+          for file in ${GRID_CHANGED_FILES}; do
             echo "$file was changed"
           done
+          echo "********************************"
+
+
+      - name: Run Step if grid changes
+        if: steps.grid-only.outputs.test_any_changed == 'true'
+        env:
+          MHWS_CHANGED_FILES: ${{ steps.mhws-only.outputs.all_changed_files }}
+        run: |
+            echo "********************************"
+            echo "MHWS files changes"
+            for file in ${MHWS_CHANGED_FILES}; do
+              echo "$file was changed"
+            done
+            echo "********************************"
+  
 
 #   build:
 
