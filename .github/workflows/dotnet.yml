@@ -45,18 +45,14 @@ jobs:
           done
           echo "********************************"
           
-      - name: list all changes
-        if: steps.all-changed-files.outputs.changed_files == 'false'
-        run: |
-            echo "********************************"
-            echo "No file changes"
-            echo "********************************"
-
-      - name: Run Step if grid changes
-        if: steps.changed-files.outputs.grid_any_changed == 'false'
+      - name: DEBUG
         run: |
           echo "********************************"
-          echo "No GRID changes"
+          echo "${{ steps.changed-files.outputs.grid_any_changed }}"
+          echo "${{ steps.changed-files.outputs.mhws_any_changed }}"
+          echo "${{ steps.changed-files.outputs }}"
+          echo "********************************"
+          echo "${{ steps.all-changed-files.outputs }}"
           echo "********************************"
 
   
