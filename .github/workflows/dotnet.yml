@@ -28,6 +28,38 @@ jobs:
               - mhws/**
               - lib/**
 
+      - name: Get All Change Files
+        uses: tj-actions/changed-files@v43
+        id: all-changed-files
+
+      - name: list all changes
+        if: steps.all-changed-files.outputs.changed_files == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo "********************************"
+          echo "All files changes"
+          echo "********************************"
+          for file in ${CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+          echo "********************************"
+          
+      - name: list all changes
+        if: steps.all-changed-files.outputs.changed_files == 'false'
+        run: |
+            echo "********************************"
+            echo "No file changes"
+            echo "********************************"
+
+      - name: Run Step if grid changes
+        if: steps.changed-files.outputs.grid_any_changed == 'false'
+        run: |
+          echo "********************************"
+          echo "No GRID changes"
+          echo "********************************"
+
+  
       - name: Run Step if grid changes
         if: steps.changed-files.outputs.grid_any_changed == 'true'
         env:
