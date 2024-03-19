@@ -16,10 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get Changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v43
-
       - name: Grid Only
         uses: tj-actions/changed-files@v43
         id: grid-only
@@ -39,9 +35,9 @@ jobs:
               - lib/**
       
       - name: Run Step if grid changes
-        if: steps.grid-only.outputs.test_any_changed == 'true'
+        if: steps.grid-only.outputs.src_any_changed == 'true'
         env:
-          GRID_CHANGED_FILES: ${{ steps.grid-only.outputs.all_changed_files }}
+          GRID_CHANGED_FILES: ${{ steps.grid-only.outputs.src_all_changed_files }}
         run: |
           echo "********************************"
           echo "Grid files changes"
@@ -52,9 +48,9 @@ jobs:
 
 
       - name: Run Step if MHWS changes
-        if: steps.mhws-only.outputs.test_any_changed == 'true'
+        if: steps.mhws-only.outputs.src_any_changed == 'true'
         env:
-          MHWS_CHANGED_FILES: ${{ steps.mhws-only.outputs.all_changed_files }}
+          MHWS_CHANGED_FILES: ${{ steps.mhws-only.outputs.src_all_changed_files }}
         run: |
             echo "********************************"
             echo "MHWS files changes"
