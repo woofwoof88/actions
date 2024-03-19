@@ -22,11 +22,11 @@ jobs:
         with:
           files_yaml: |
             grid:
-              - www/**
-              - lib/**
+              - node/www/**
+              - node/lib/**
             mhws:
-              - mhws/**
-              - lib/**
+              - node/mhws/**
+              - node/lib/**
 
       - name: Get All Change Files
         uses: tj-actions/changed-files@v43
