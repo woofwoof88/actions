@@ -51,8 +51,8 @@ jobs:
           echo "********************************"
 
 
-      - name: Run Step if grid changes
-        if: steps.grid-only.outputs.test_any_changed == 'true'
+      - name: Run Step if MHWS changes
+        if: steps.mhws-only.outputs.test_any_changed == 'true'
         env:
           MHWS_CHANGED_FILES: ${{ steps.mhws-only.outputs.all_changed_files }}
         run: |
