@@ -28,34 +28,6 @@ jobs:
               - node/mhws/**
               - node/lib/**
 
-      - name: Get All Change Files
-        uses: tj-actions/changed-files@v43
-        id: all-changed-files
-
-      - name: list all changes
-        if: steps.all-changed-files.outputs.changed_files == 'true'
-        env:
-          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-        run: |
-          echo "********************************"
-          echo "All files changes"
-          echo "********************************"
-          for file in ${CHANGED_FILES}; do
-            echo "$file was changed"
-          done
-          echo "********************************"
-          
-      - name: DEBUG
-        run: |
-          echo "********************************"
-          echo "${{ steps.changed-files.outputs.grid_any_changed }}"
-          echo "${{ steps.changed-files.outputs.mhws_any_changed }}"
-          echo "${{ steps.changed-files.outputs }}"
-          echo "********************************"
-          echo "${{ steps.all-changed-files.outputs }}"
-          echo "********************************"
-
-  
       - name: Run Step if grid changes
         if: steps.changed-files.outputs.grid_any_changed == 'true'
         env:
