@@ -5,11 +5,15 @@ name: .NET
 
 on:
   push:
-    branches:
-      - main
     tags:
-      v*
+      - 'v*' 
 
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Manual Deploy'
+        required: true
+        type: boolean
 
 jobs:
   changed_files:    
