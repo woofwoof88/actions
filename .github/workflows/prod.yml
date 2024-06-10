@@ -39,7 +39,7 @@ jobs:
               - node/lib/**
 
       - name: Run Step if grid changes
-        if: steps.changed-files.outputs.grid_any_changed == 'true'
+        if: ${{ steps.changed-files.outputs.grid_any_changed == 'true' || github.event.inputs.service == 'GRID'  || github.event.inputs.service == 'ALL' }}
         env:
           GRID_CHANGED_FILES: ${{ steps.changed-files.outputs.grid_all_changed_files }}
         run: |
@@ -52,7 +52,7 @@ jobs:
 
 
       - name: Run Step if MHWS changes
-        if: steps.changed-files.outputs.mhws_any_changed == 'true'
+        if: ${{ steps.changed-files.outputs.mhws_any_changed == 'true' || github.event.inputs.service == 'MHWS' || github.event.inputs.service == 'ALL' }}
         env:
           MHWS_CHANGED_FILES: ${{ steps.changed-files.outputs.mhws_all_changed_files }}
         run: |
