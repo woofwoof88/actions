@@ -5,9 +5,8 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - feat-*
 
 jobs:
   changed_files:    

@@ -1,0 +1,74 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      v*
+
+
+jobs:
+  changed_files:    
+    runs-on: ubuntu-latest
+    name: Testing Changes
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Change Files
+        uses: tj-actions/changed-files@v43
+        id: changed-files
+        with:
+          files_yaml: |
+            grid:
+              - node/www/**
+              - node/lib/**
+            mhws:
+              - node/mhws/**
+              - node/lib/**
+
+      - name: Run Step if grid changes
+        if: steps.changed-files.outputs.grid_any_changed == 'true'
+        env:
+          GRID_CHANGED_FILES: ${{ steps.changed-files.outputs.grid_all_changed_files }}
+        run: |
+          echo "********************************"
+          echo "Grid files changes"
+          for file in ${GRID_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+          echo "********************************"
+
+
+      - name: Run Step if MHWS changes
+        if: steps.changed-files.outputs.mhws_any_changed == 'true'
+        env:
+          MHWS_CHANGED_FILES: ${{ steps.changed-files.outputs.mhws_all_changed_files }}
+        run: |
+            echo "********************************"
+            echo "MHWS files changes"
+            for file in ${MHWS_CHANGED_FILES}; do
+              echo "$file was changed"
+            done
+            echo "********************************"
+  
+
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Setup .NET
+#       uses: actions/setup-dotnet@v4
+#       with:
+#         dotnet-version: 8.0.x
+#     - name: Restore dependencies
+#       run: dotnet restore
+#     - name: Build
+#       run: dotnet build --no-restore
+# #    - name: Test
+# #      run: dotnet test --no-build --verbosity normal
