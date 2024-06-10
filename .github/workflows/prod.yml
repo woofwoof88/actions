@@ -14,6 +14,10 @@ on:
         description: 'Manual Deploy'
         required: true
         type: boolean
+      service:
+        description: 'Service: MHWS/GRID/BOTH'
+        required: true
+        type: string
 
 jobs:
   changed_files:    
